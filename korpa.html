@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="sr-Latn-ME">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Korpa | Organski med</title>
+<meta name="description" content="Vaša korpa. Plaćanje pouzećem, dostava širom Crne Gore za 1 do 3 radna dana.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23E0A526'/%3E%3Cpath d='M16 6l8.7 5v10L16 26l-8.7-5V11z' fill='%233B2412'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,600;0,700;0,800;1,600&family=Nunito+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<noscript><style>.curtain{display:none}</style></noscript>
+</head>
+<body>
+<script src="shared.js"></script>
+<script>Site.header("korpa")</script>
+
+<main id="main"><div class="container" id="app"></div></main>
+
+<script>
+(() => {
+  const app = document.getElementById("app");
+  const PHONE = /^\+?[\d][\d\s\/-]{6,}$/;
+
+  function draw() {
+    const lines = Cart.lines();
+    if (!lines.length) {
+      app.innerHTML = `<div class="empty"><h1>Korpa je prazna</h1><p>Dodajte med ili neki pčelinji proizvod i vratite se ovdje.</p><a href="index.html#proizvodi" class="btn btn-primary">Pogledaj proizvode</a></div>`;
+      return;
+    }
+    const sub = Cart.subtotal(), ship = Cart.shipping(), left = Math.max(0, SHIPPING.freeFrom - sub);
+    app.innerHTML = `
+    <h1 class="page-title">Korpa</h1>
+    <div class="cart-page">
+      <div>
+        <div class="lines">${lines.map(l => `
+          <div class="line" data-id="${l.id}">
+            <a class="thumb ${l.p.g}" href="proizvod.html?id=${l.id}" aria-label="${l.p.n}">${jar(l.p.col)}</a>
+            <div>
+              <h3><a href="proizvod.html?id=${l.id}">${l.p.n}</a></h3>
+              <div class="meta">${l.p.w} · ${eur(l.p.p)}</div>
+              <div class="line-actions">
+                <div class="qty qty-sm" role="group" aria-label="Količina za ${l.p.n}">
+                  <button type="button" data-act="dec" aria-label="Smanji količinu">−</button>
+                  <output>${l.q}</output>
+                  <button type="button" data-act="inc" aria-label="Povećaj količinu">+</button>
+                </div>
+                <button type="button" class="link-btn" data-act="rm">Ukloni</button>
+              </div>
+            </div>
+            <div class="sum">${eur(l.p.p * l.q)}</div>
+          </div>`).join("")}
+        </div>
+
+        <form class="form-block" id="checkout" novalidate>
+          <h2>Podaci za dostavu</h2>
+          <div class="fields-2">
+            <div class="field"><label for="ime">Ime i prezime</label><input id="ime" name="ime" autocomplete="name" required aria-describedby="e-ime"><span class="err" id="e-ime"></span></div>
+            <div class="field"><label for="tel">Telefon</label><input id="tel" name="tel" type="tel" autocomplete="tel" required aria-describedby="e-tel" placeholder="+382 67 123 456"><span class="err" id="e-tel"></span></div>
+          </div>
+          <div class="fields-2">
+            <div class="field"><label for="grad">Grad</label><input id="grad" name="grad" autocomplete="address-level2" required aria-describedby="e-grad"><span class="err" id="e-grad"></span></div>
+            <div class="field"><label for="adresa">Adresa</label><input id="adresa" name="adresa" autocomplete="street-address" required aria-describedby="e-adresa"><span class="err" id="e-adresa"></span></div>
+          </div>
+          <div class="field"><label for="nap">Napomena (nije obavezno)</label><textarea id="nap" name="nap" rows="3"></textarea></div>
+        </form>
+      </div>
+
+      <aside class="summary" aria-label="Pregled narudžbine">
+        <h2>Pregled</h2>
+        <div class="row"><span>Proizvodi</span><span>${eur(sub)}</span></div>
+        <div class="row"><span>Dostava</span><span>${ship ? eur(ship) : "Besplatno"}</span></div>
+        ${left ? `<div class="ship-bar" aria-hidden="true"><i style="width:${Math.min(100, sub / SHIPPING.freeFrom * 100)}%"></i></div><p class="ship-note">Još ${eur(left)} do besplatne dostave.</p>` : `<p class="ship-note ok">Dostava je besplatna.</p>`}
+        <div class="row total"><span>Ukupno</span><span>${eur(Cart.total())}</span></div>
+        <p class="pay-note">Plaćanje pouzećem, prilikom preuzimanja paketa.</p>
+        <button type="submit" form="checkout" class="btn btn-primary btn-block">Potvrdi narudžbinu</button>
+      </aside>
+    </div>`;
+  }
+
+  /* količina i uklanjanje */
+  app.addEventListener("click", e => {
+    const b = e.target.closest("[data-act]"); if (!b) return;
+    const row = b.closest(".line"), id = row.dataset.id, cur = Cart.lines().find(l => l.id === id).q;
+    const saved = snapshot();
+    if (b.dataset.act === "inc") Cart.set(id, cur + 1);
+    if (b.dataset.act === "dec") Cart.set(id, cur - 1);
+    if (b.dataset.act === "rm") Cart.remove(id);
+    draw(); restore(saved);
+  });
+
+  /* sačuvaj upisane podatke dok se korpa ponovo crta */
+  const snapshot = () => Object.fromEntries([...app.querySelectorAll("#checkout input, #checkout textarea")].map(i => [i.id, i.value]));
+  const restore = s => Object.entries(s).forEach(([k, v]) => { const i = document.getElementById(k); if (i) i.value = v; });
+
+  /* provjera forme */
+  const rules = {
+    ime: v => v.trim().split(/\s+/).filter(Boolean).length >= 2 ? "" : "Upišite ime i prezime.",
+    tel: v => PHONE.test(v.trim()) ? "" : "Upišite broj telefona, npr. +382 67 123 456.",
+    grad: v => v.trim().length >= 2 ? "" : "Upišite grad.",
+    adresa: v => v.trim().length >= 4 ? "" : "Upišite adresu za dostavu."
+  };
+  const check = k => {
+    const i = document.getElementById(k), msg = rules[k](i.value);
+    i.setAttribute("aria-invalid", msg ? "true" : "false");
+    document.getElementById("e-" + k).textContent = msg;
+    return !msg;
+  };
+  app.addEventListener("focusout", e => { if (e.target.id in rules && e.target.value) check(e.target.id); });
+  app.addEventListener("submit", e => {
+    e.preventDefault();
+    const ok = Object.keys(rules).map(check).every(Boolean);
+    if (!ok) { document.querySelector('[aria-invalid="true"]').focus(); return; }
+
+    /* NAPOMENA: ovdje se narudžbina trenutno ne šalje nigdje, to preuzima WooCommerce */
+    const no = "M-" + Math.floor(100000 + Math.random() * 900000);
+    const total = Cart.total();
+    Cart.clear();
+    app.innerHTML = `<div class="empty confirm"><h1>Narudžbina je primljena</h1><p>Broj narudžbine: <b>${no}</b>. Javićemo vam se na broj koji ste ostavili radi potvrde dostave. Plaćate ${eur(total)} prilikom preuzimanja paketa.</p><p class="demo-note"><b>Ovo je pregled dizajna.</b> Narudžbina nije poslata i podaci se nigdje ne čuvaju.</p><a href="index.html" class="btn btn-primary">Nazad na početnu</a></div>`;
+    scrollTo(0, 0);
+  });
+
+  draw();
+})();
+</script>
+
+<script>Site.footer()</script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

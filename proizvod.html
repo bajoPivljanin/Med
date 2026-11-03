@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="sr-Latn-ME">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Proizvod | Organski med</title>
+<meta name="description" content="Organski, domaći i prirodni med iz Crne Gore, direktno od pčelara.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon"href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23E0A526'/%3E%3Cpath d='M16 6l8.7 5v10L16 26l-8.7-5V11z' fill='%233B2412'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,600;0,700;0,800;1,600&family=Nunito+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<noscript><style>.curtain{display:none}</style></noscript>
+</head>
+<body>
+<script src="shared.js"></script>
+<script>Site.header("shop")</script>
+
+<main id="main"><div class="container" id="app"></div></main>
+
+<script>
+(() => {
+  const app = document.getElementById("app");
+  const id = new URLSearchParams(location.search).get("id");
+  const p = products.find(x => x.id === id);
+
+  if (!p) {
+    document.title = "Proizvod nije pronađen | Organski med";
+    app.innerHTML = `<div class="empty"><h1>Proizvod nije pronađen</h1><p>Možda je link star ili je proizvod trenutno povučen iz ponude.</p><a href="index.html#proizvodi" class="btn btn-primary">Nazad na proizvode</a></div>`;
+    return;
+  }
+
+  document.title = `${p.n} | Organski med`;
+  document.querySelector('meta[name="description"]').setAttribute("content", `${p.n}: ${p.d} ${eur(p.p)}, ${p.w}. Dostava širom Crne Gore, plaćanje pouzećem.`);
+
+  const related = products.filter(x => x.id !== p.id).sort((a, b) => (b.c === p.c) - (a.c === p.c)).slice(0, 4);
+
+  app.innerHTML = `
+  <nav class="crumbs" aria-label="Putanja"><a href="index.html">Početna</a><span>/</span><a href="index.html#proizvodi">Proizvodi</a><span>/</span>${p.n}</nav>
+  <section class="pd">
+    <div class="pd-img ${p.g}">${p.t ? `<span class="tag pd-tag">${p.t}</span>` : ""}${jar(p.col)}</div>
+    <div class="pd-info">
+      <span class="eyebrow">${label[p.c]}</span>
+      <h1>${p.n}</h1>
+      <div class="pd-price">${eur(p.p)}<small>${p.w}</small></div>
+      <p class="pd-lead">${p.long[0]}</p>
+      <div class="pd-buy">
+        <div class="qty" role="group" aria-label="Količina">
+          <button type="button" data-d="-1" aria-label="Smanji količinu">−</button>
+          <output id="q" aria-live="polite">1</output>
+          <button type="button" data-d="1" aria-label="Povećaj količinu">+</button>
+        </div>
+        <button type="button" class="btn btn-primary" id="add">Dodaj u korpu</button>
+      </div>
+      <p class="status" id="status" role="status"></p>
+      <ul class="pd-trust">
+        <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.5"/><circle cx="17" cy="17.5" r="1.5"/></svg>Dostava 1 do 3 radna dana</li>
+        <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 6a7 7 0 1 0 0 12M4 10h9M4 14h9"/></svg>Plaćanje pouzećem</li>
+      </ul>
+      <p>${p.long[1]}</p>
+      <dl class="facts">${p.facts.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>
+    </div>
+  </section>
+
+  <section class="pd-related">
+    <h2>Možda će vam se svidjeti</h2>
+    <div class="grid" id="rel">${related.map(r => `
+      <article class="card"><a class="img ${r.g}" href="proizvod.html?id=${r.id}" aria-label="${r.n}">${r.t ? `<span class="tag">${r.t}</span>` : ""}${jar(r.col)}</a>
+      <div class="body"><span class="cat">${label[r.c]}</span><h3><a href="proizvod.html?id=${r.id}">${r.n}</a></h3><p>${r.d}</p>
+      <div class="foot"><div class="price">${eur(r.p)}<small>${r.w}</small></div><button class="add" data-id="${r.id}" aria-label="Dodaj ${r.n} u korpu">+</button></div></div></article>`).join("")}
+    </div>
+  </section>`;
+
+  let q = 1;
+  const out = document.getElementById("q"), status = document.getElementById("status");
+  app.querySelector(".qty").addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    q = Math.max(1, Math.min(20, q + +b.dataset.d)); out.textContent = q;
+  });
+  document.getElementById("add").addEventListener("click", () => {
+    Cart.add(p.id, q); Cart.bump();
+    status.innerHTML = `Dodato u korpu (${q}). <a href="korpa.html">Pogledaj korpu</a>`;
+  });
+  document.getElementById("rel").addEventListener("click", e => {
+    const b = e.target.closest(".add"); if (!b) return;
+    Cart.add(b.dataset.id); Cart.bump();
+  });
+})();
+</script>
+
+<script>Site.footer()</script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

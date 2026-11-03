@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="sr-Latn-ME">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Članak | Organski med</title>
+<meta name="description" content="Savjeti o medu i priče iz pčelinjaka u Crnoj Gori.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon"href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23E0A526'/%3E%3Cpath d='M16 6l8.7 5v10L16 26l-8.7-5V11z' fill='%233B2412'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,600;0,700;0,800;1,600&family=Nunito+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<noscript><style>.curtain{display:none}</style></noscript>
+</head>
+<body>
+<script src="shared.js"></script>
+<script>Site.header("blog")</script>
+
+<main id="main"><div class="container" id="app"></div></main>
+
+<script>
+(() => {
+  const app = document.getElementById("app");
+  const slug = new URLSearchParams(location.search).get("slug");
+  const p = posts.find(x => x.slug === slug);
+
+  if (!p) {
+    document.title = "Članak nije pronađen | Organski med";
+    app.innerHTML = `<div class="empty"><h1>Članak nije pronađen</h1><p>Možda je link star ili je članak uklonjen.</p><a href="blog.html" class="btn btn-primary">Nazad na blog</a></div>`;
+    return;
+  }
+
+  document.title = `${p.title} | Organski med`;
+  document.querySelector('meta[name="description"]').setAttribute("content", p.excerpt);
+
+  const more = posts.filter(x => x.slug !== p.slug).sort((a, b) => b.date.localeCompare(a.date)).slice(0, 2);
+
+  app.innerHTML = `
+  <nav class="crumbs" aria-label="Putanja"><a href="index.html">Početna</a><span>/</span><a href="blog.html">Blog</a><span>/</span>${p.cat}</nav>
+  <article class="article">
+    <header>
+      <div class="post-meta"><span class="eyebrow">${p.cat}</span> · ${fmtDate(p.date)} · ${readTime(p)}</div>
+      <h1>${p.title}</h1>
+      <p class="article-lead">${p.excerpt}</p>
+    </header>
+    <div class="post-cover article-cover ${p.g}">${jar(p.col)}</div>
+    <div class="prose">${p.body.map(([t, s]) => t === "h" ? `<h2>${s}</h2>` : `<p>${s}</p>`).join("")}</div>
+    <div class="article-cta">
+      <div><h3>Probajte domaći med</h3><p>Bagrem, livada, kesten i žalfija, direktno od pčelara.</p></div>
+      <a href="index.html#proizvodi" class="btn btn-primary">Pogledaj proizvode</a>
+    </div>
+  </article>
+  <section class="pd-related">
+    <h2>Još sa bloga</h2>
+    <div class="posts posts-2">${more.map(m => `
+      <article class="post-card">
+        <a href="clanak.html?slug=${m.slug}" aria-label="${m.title}"><div class="post-cover ${m.g}">${jar(m.col)}</div></a>
+        <div class="post-body">
+          <div class="post-meta"><span class="eyebrow">${m.cat}</span> · ${fmtDate(m.date)}</div>
+          <h3><a href="clanak.html?slug=${m.slug}">${m.title}</a></h3>
+          <p>${m.excerpt}</p>
+        </div>
+      </article>`).join("")}
+    </div>
+  </section>`;
+})();
+</script>
+
+<script>Site.footer()</script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

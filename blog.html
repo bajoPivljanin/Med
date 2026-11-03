@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="sr-Latn-ME">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Blog o medu i pčelarstvu | Organski med</title>
+<meta name="description" content="Savjeti o medu, vodiči kroz vrste meda i priče iz pčelinjaka u Crnoj Gori.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon"href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23E0A526'/%3E%3Cpath d='M16 6l8.7 5v10L16 26l-8.7-5V11z' fill='%233B2412'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,600;0,700;0,800;1,600&family=Nunito+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<noscript><style>.curtain{display:none}</style></noscript>
+</head>
+<body>
+<script src="shared.js"></script>
+<script>Site.header("blog")</script>
+
+<main id="main">
+<section class="section blog-head"><div class="container">
+  <div class="section-head"><span class="eyebrow">Blog</span><h1>Sve o medu, iz prve ruke</h1><p>Savjeti, vodiči i priče iz pčelinjaka.</p></div>
+  <div id="blog"></div>
+</div></section>
+</main>
+
+<script>
+(() => {
+  const sorted = [...posts].sort((a, b) => b.date.localeCompare(a.date));
+  const [first, ...rest] = sorted;
+  const cover = p => `<div class="post-cover ${p.g}">${jar(p.col)}</div>`;
+  document.getElementById("blog").innerHTML = `
+    <article class="blog-feature">
+      <a href="clanak.html?slug=${first.slug}" aria-label="${first.title}">${cover(first)}</a>
+      <div class="post-body">
+        <div class="post-meta"><span class="eyebrow">${first.cat}</span> · ${fmtDate(first.date)} · ${readTime(first)}</div>
+        <h2><a href="clanak.html?slug=${first.slug}">${first.title}</a></h2>
+        <p>${first.excerpt}</p>
+        <a href="clanak.html?slug=${first.slug}" class="btn btn-outline">Pročitaj članak</a>
+      </div>
+    </article>
+    <div class="posts">${rest.map(p => `
+      <article class="post-card">
+        <a href="clanak.html?slug=${p.slug}" aria-label="${p.title}">${cover(p)}</a>
+        <div class="post-body">
+          <div class="post-meta"><span class="eyebrow">${p.cat}</span> · ${fmtDate(p.date)}</div>
+          <h3><a href="clanak.html?slug=${p.slug}">${p.title}</a></h3>
+          <p>${p.excerpt}</p>
+          <span class="post-meta">${readTime(p)}</span>
+        </div>
+      </article>`).join("")}
+    </div>`;
+})();
+</script>
+
+<script>Site.footer()</script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
