@@ -359,3 +359,7 @@ html{scroll-padding-top:84px}
   .line .sum{grid-column:2}
 }
 .demo-note{background:var(--cream);border-radius:12px;padding:12px 16px;font-size:.9rem;margin-top:-8px}
+
+/* Filter kategorija: sakrivene kartice */
+.card[hidden]{display:none!important}
+.add{display:inline-flex;align-items:center;justify-content:center;line-height:1;text-decoration:none}

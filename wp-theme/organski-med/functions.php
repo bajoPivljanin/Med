@@ -28,3 +28,40 @@ function om_cart_count(): int {
 function om_cart_url(): string {
     return function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/korpa/');
 }
+
+/** Cijene bez nepotrebnih nula: "20 €", a ne "20,00 €". */
+add_filter('woocommerce_price_trim_zeros', '__return_true');
+
+/** Ilustracija tegle u boji Proizvoda (kad Proizvod nema fotografiju). */
+function om_jar(string $color): string {
+    $c = esc_attr($color);
+    return '<svg viewBox="0 0 100 130" fill="none" aria-hidden="true"><rect x="22" y="4" width="56" height="16" rx="4" fill="#3B2412"/><path d="M18 24h64v90a12 12 0 0 1-12 12H30a12 12 0 0 1-12-12z" fill="#fff" fill-opacity=".4" stroke="#3B2412" stroke-width="3"/><path d="M22 50h56v64a8 8 0 0 1-8 8H30a8 8 0 0 1-8-8z" fill="' . $c . '"/><rect x="30" y="68" width="40" height="32" rx="6" fill="#FFF6DC"/></svg>';
+}
+
+/** Slika Proizvoda: fotografija ako postoji, inače tegla. */
+function om_product_visual(WC_Product $p): string {
+    if ($p->get_image_id()) {
+        return wp_get_attachment_image($p->get_image_id(), 'woocommerce_single', false, ['alt' => $p->get_name()]);
+    }
+    return om_jar($p->get_meta('_om_color') ?: '#E0A526');
+}
+
+/** Naziv kategorije Proizvoda. */
+function om_product_cat(WC_Product $p): array {
+    $t = get_the_terms($p->get_id(), 'product_cat');
+    return $t && !is_wp_error($t) ? [$t[0]->slug, $t[0]->name] : ['', ''];
+}
+
+/** Težina/zapremina za prikaz uz cijenu (prvi atribut: Težina, Zapremina ili Sadržaj). */
+function om_product_size(WC_Product $p): string {
+    foreach (['Težina', 'Zapremina', 'Sadržaj'] as $k) {
+        $v = $p->get_attribute($k);
+        if ($v) return $v;
+    }
+    return '';
+}
+
+add_action('wp_enqueue_scripts', function () {
+    $dir = get_template_directory();
+    wp_enqueue_script('organski-med-shop', get_template_directory_uri() . '/assets/shop.js', [], filemtime($dir . '/assets/shop.js'), true);
+}, 20);

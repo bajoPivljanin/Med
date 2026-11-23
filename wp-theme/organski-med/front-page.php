@@ -38,7 +38,15 @@
 
 <section class="section" id="proizvodi"><div class="container">
   <div class="section-head"><span class="eyebrow">Naša ponuda</span><h2>Domaći med iz Crne Gore</h2><p>Od nježnog bagrema do jakog kestena, izaberite svoj omiljeni prirodni med.</p></div>
-  <div class="grid" id="shop"><p class="foot-note">Proizvodi stižu u sljedećem koraku (katalog).</p></div>
+  <div class="filters">
+    <button class="active" aria-pressed="true" data-f="all">Svi</button><button aria-pressed="false" data-f="med">Med</button><button aria-pressed="false" data-f="pcelinji-proizvodi">Pčelinji proizvodi</button><button aria-pressed="false" data-f="poklon">Poklon</button>
+  </div>
+  <div class="grid" id="shop">
+    <?php
+    $products = function_exists('wc_get_products') ? wc_get_products(['status' => 'publish', 'limit' => -1, 'orderby' => 'menu_order', 'order' => 'ASC']) : [];
+    foreach ($products as $product) get_template_part('template-parts/product-card', null, ['product' => $product]);
+    ?>
+  </div>
 </div></section>
 
 <section class="section benefits"><div class="container">
