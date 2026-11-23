@@ -43,7 +43,7 @@
   </div>
   <div class="grid" id="shop">
     <?php
-    $products = function_exists('wc_get_products') ? wc_get_products(['status' => 'publish', 'limit' => -1, 'orderby' => 'menu_order', 'order' => 'ASC']) : [];
+    $products = function_exists('wc_get_products') ? wc_get_products(['status' => 'publish', 'visibility' => 'catalog', 'limit' => -1, 'orderby' => 'menu_order', 'order' => 'ASC']) : [];
     foreach ($products as $product) get_template_part('template-parts/product-card', null, ['product' => $product]);
     ?>
   </div>

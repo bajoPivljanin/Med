@@ -10,9 +10,9 @@ while (have_posts()) : the_post();
     $desc = array_values(array_filter(array_map('trim', preg_split('#</p>\s*#', $p->get_description()))));
     $lead = isset($desc[0]) ? wp_strip_all_tags($desc[0]) : '';
     $rest = isset($desc[1]) ? wp_strip_all_tags($desc[1]) : '';
-    $related = wc_get_products(['status' => 'publish', 'limit' => 4, 'exclude' => [$p->get_id()], 'orderby' => 'menu_order', 'order' => 'ASC', 'category' => [$catSlug]]);
+    $related = wc_get_products(['status' => 'publish', 'visibility' => 'catalog', 'limit' => 4, 'exclude' => [$p->get_id()], 'orderby' => 'menu_order', 'order' => 'ASC', 'category' => [$catSlug]]);
     if (count($related) < 4) {
-        $more = wc_get_products(['status' => 'publish', 'limit' => 4 - count($related), 'orderby' => 'menu_order', 'order' => 'ASC',
+        $more = wc_get_products(['status' => 'publish', 'visibility' => 'catalog', 'limit' => 4 - count($related), 'orderby' => 'menu_order', 'order' => 'ASC',
             'exclude' => array_merge([$p->get_id()], array_map(fn($r) => $r->get_id(), $related))]);
         $related = array_merge($related, $more);
     }
