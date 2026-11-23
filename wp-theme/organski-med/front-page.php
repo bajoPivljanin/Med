@@ -21,14 +21,12 @@
         <?php endif; ?>
     <span class="chip a"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c0-9 5-14 14-14 0 9-5 14-14 14zM5 19l7-7"/></svg>100% prirodno</span>
     <span class="chip b"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.5"/><circle cx="17" cy="17.5" r="1.5"/></svg>Dostava širom Crne Gore</span>
-    <span class="chip c"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>Preko 500 kupaca</span>
   </div>
 </div></header>
 
 <section class="stats"><div class="container">
   <div><b>20+</b><span>Godina iskustva</span></div>
   <div><b>270</b><span>Košnica</span></div>
-  <div><b>500+</b><span>Zadovoljnih kupaca</span></div>
   <div><b>100%</b><span>Domaća proizvodnja</span></div>
 </div></section>
 <div class="trust"><div class="container">
