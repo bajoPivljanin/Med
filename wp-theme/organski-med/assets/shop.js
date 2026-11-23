@@ -27,3 +27,15 @@
     });
   }
 })();
+
+/* Meni na telefonu (hamburger) */
+(() => {
+  const nav = document.querySelector('.nav');
+  const btn = nav && nav.querySelector('.menu');
+  if (!btn) return;
+  btn.addEventListener('click', () => btn.setAttribute('aria-expanded', nav.classList.toggle('open')));
+  nav.querySelectorAll('#menu a').forEach(a => a.addEventListener('click', () => {
+    nav.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+  }));
+})();

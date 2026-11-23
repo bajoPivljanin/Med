@@ -348,7 +348,7 @@ html{scroll-padding-top:84px}
 @media(max-width:960px){
   .pd,.cart-page,.blog-feature{grid-template-columns:1fr}
   .pd{gap:32px}
-  .pd-img{position:static;max-width:520px}
+  .pd-img{position:relative;top:auto;max-width:520px}
   .summary{position:static}
   .posts{grid-template-columns:repeat(2,1fr)}
   .post-body{padding:28px}
@@ -366,7 +366,7 @@ html{scroll-padding-top:84px}
 
 /* ===== Korpa i narudžbina (WooCommerce) ===== */
 .entry{max-width:1100px;margin:0 auto}
-.woocommerce{font-family:inherit;color:var(--brown)}
+.woocommerce{font-family:var(--font-body);color:var(--brown)}
 .ship-note{background:var(--sage-pale);color:var(--brown);border-radius:14px;padding:.8rem 1.1rem;margin:0 0 1.2rem;font-weight:600}
 .om-notices{padding-top:1rem}
 .woocommerce-message,.woocommerce-info,.woocommerce-error{list-style:none;margin:0 0 1.2rem;padding:.9rem 1.1rem;border-radius:14px;background:var(--honey-pale);border:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
@@ -435,3 +435,10 @@ html{scroll-padding-top:84px}
 .entry ul{padding-left:1.2rem}
 .draft-note{background:#FFF1D6;border:1px solid var(--honey);border-radius:14px;padding:.9rem 1.1rem;margin:0 0 1.5rem}
 .copy .legal a{margin:0 .2rem}
+
+/* Dostava samo za Crnu Goru: nema računanja dostave po adresi */
+.woocommerce-shipping-calculator,.woocommerce .shipping-calculator-button{display:none}
+@media (max-width:820px){
+  .woocommerce table.shop_table_responsive tr.woocommerce-shipping-totals td{display:block;text-align:left}
+  .woocommerce table.shop_table_responsive tr.woocommerce-shipping-totals td::before{display:block;margin:0 0 .3rem}
+}

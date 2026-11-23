@@ -22,6 +22,7 @@ update_option('woocommerce_specific_allowed_countries', ['ME']);
 update_option('woocommerce_ship_to_countries', '');
 update_option('woocommerce_calc_taxes', 'no');
 update_option('woocommerce_enable_coupons', 'no');
+update_option('woocommerce_checkout_privacy_policy_text', 'Vaši podaci se koriste samo za obradu narudžbine i dostavu, kako je opisano u našoj [privacy_policy].');
 update_option('woocommerce_checkout_phone_field', 'required');
 
 /* Kupovina bez naloga */
