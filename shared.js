@@ -24,7 +24,7 @@ const products = [
   { id: "propolis", n: "Propolis", c: "pcelinji", d: "Prirodni štit za imunitet.", p: 6, w: "20 ml", g: "g4", col: "#9A5B1B",
     long: ["Propolis pčele prave od smola sa pupoljaka i koriste ga da zaštite košnicu. Ovdje je u obliku tečnog ekstrakta u maloj bočici.", "Koristi se u kapima, prema uputstvu na pakovanju."],
     facts: [["Zapremina", "20 ml"], ["Oblik", "Tečni ekstrakt"], ["Čuvanje", "Zatvoreno, na tamnom i hladnom mjestu"]] },
-  { id: "sace", n: "Saće", c: "pcelinji", d: "Med u svom najčistijem obliku.", p: 25, w: "500 g", g: "g1", col: "#E0A526", t: "Novo",
+  { id: "sace", n: "Saće", c: "med", d: "Med u svom najčistijem obliku.", p: 25, w: "500 g", g: "g1", col: "#E0A526", t: "Novo",
     long: ["Med u saću, onakav kakav je u košnici. Saće se jede cijelo, zajedno sa voštanim zidovima ćelija.", "Lijepo izgleda na tanjiru sa sirevima, a može i kašikom direktno iz tegle."],
     facts: [["Težina", "500 g"], ["Berba", "Prema sezoni"], ["Oblik", "Cijelo saće"], ["Čuvanje", "Zatvoreno, na sobnoj temperaturi"]] },
   { id: "poklon", n: "Poklon paket", c: "poklon", d: "Tri meda u lijepoj kutiji.", p: 50, w: "3 × 250 g", g: "g4", col: "#B67F0E",
