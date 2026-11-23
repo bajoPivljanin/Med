@@ -442,3 +442,11 @@ html{scroll-padding-top:84px}
   .woocommerce table.shop_table_responsive tr.woocommerce-shipping-totals td{display:block;text-align:left}
   .woocommerce table.shop_table_responsive tr.woocommerce-shipping-totals td::before{display:block;margin:0 0 .3rem}
 }
+
+/* Fotografije na početnoj */
+.hero-visual{overflow:visible}
+.hero-visual .hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block}
+.hero-visual:has(.hero-photo)::before{display:none}
+.about .photo{overflow:hidden}
+.about .photo .about-photo{width:100%;height:100%;object-fit:cover;display:block}
+.hero-visual{width:100%}

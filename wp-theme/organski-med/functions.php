@@ -111,3 +111,18 @@ function om_legal_links(): string {
 }
 
 require_once get_template_directory() . '/inc/seo.php';
+
+/** Fotografije početne stranice biraju se u Prilagodi → Fotografije početne. */
+add_action('customize_register', function (WP_Customize_Manager $c) {
+    $c->add_section('om_photos', ['title' => 'Fotografije početne', 'priority' => 30]);
+    foreach (['om_hero_image' => 'Fotografija na vrhu početne', 'om_about_image' => 'Fotografija u dijelu "O nama"'] as $id => $label) {
+        $c->add_setting($id, ['default' => 0, 'sanitize_callback' => 'absint']);
+        $c->add_control(new WP_Customize_Media_Control($c, $id, ['label' => $label, 'section' => 'om_photos', 'mime_type' => 'image']));
+    }
+});
+
+/** Slika iz podešavanja teme (ili prazno ako nije izabrana). */
+function om_theme_photo(string $mod, string $size, string $class = ''): string {
+    $id = (int) get_theme_mod($mod);
+    return $id ? wp_get_attachment_image($id, $size, false, ['class' => $class, 'loading' => $mod === 'om_hero_image' ? 'eager' : 'lazy']) : '';
+}

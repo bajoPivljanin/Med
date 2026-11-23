@@ -10,13 +10,15 @@
     </div>
   </div>
   <div class="hero-visual">
+    <?php $heroPhoto = om_theme_photo('om_hero_image', 'large', 'hero-photo'); ?>
+    <?php if ($heroPhoto) : echo $heroPhoto; else : ?>
     <svg class="jar" viewBox="0 0 100 130" fill="none" role="img" aria-label="Tegla organskog meda">
       <rect x="22" y="4" width="56" height="16" rx="4" fill="#3B2412"/>
       <path d="M18 24h64v90a12 12 0 0 1-12 12H30a12 12 0 0 1-12-12z" fill="#fff" fill-opacity=".35" stroke="#3B2412" stroke-width="3"/>
       <path d="M22 50h56v64a8 8 0 0 1-8 8H30a8 8 0 0 1-8-8z" fill="#B67F0E"/>
       <rect x="30" y="68" width="40" height="32" rx="6" fill="#FFF6DC"/><text x="50" y="89" font-size="11" text-anchor="middle" fill="#3B2412" font-weight="800" font-family="serif">MED</text>
     </svg>
-    <small>[ ovdje ide vaša fotografija ]</small>
+        <?php endif; ?>
     <span class="chip a"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c0-9 5-14 14-14 0 9-5 14-14 14zM5 19l7-7"/></svg>100% prirodno</span>
     <span class="chip b"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.5"/><circle cx="17" cy="17.5" r="1.5"/></svg>Dostava širom Crne Gore</span>
     <span class="chip c"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>Preko 500 kupaca</span>
@@ -24,8 +26,8 @@
 </div></header>
 
 <section class="stats"><div class="container">
-  <div><b>15+</b><span>Godina iskustva</span></div>
-  <div><b>80</b><span>Košnica</span></div>
+  <div><b>20+</b><span>Godina iskustva</span></div>
+  <div><b>270</b><span>Košnica</span></div>
   <div><b>500+</b><span>Zadovoljnih kupaca</span></div>
   <div><b>100%</b><span>Domaća proizvodnja</span></div>
 </div></section>
@@ -75,7 +77,7 @@
     <p>Zamijenite ovaj tekst stvarnim opisom vašeg pčelinjaka.</p>
     <a href="#kontakt" class="btn btn-primary btn-mt">Kontaktirajte nas</a>
   </div>
-  <div class="photo">[ fotografija pčelara / pčelinjaka ]</div>
+  <div class="photo"><?php $aboutPhoto = om_theme_photo('om_about_image', 'large', 'about-photo'); echo $aboutPhoto ?: '[ fotografija pčelara / pčelinjaka ]'; ?></div>
 </div></section>
 
 <section class="section"><div class="container">
