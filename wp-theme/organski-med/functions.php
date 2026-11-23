@@ -93,3 +93,19 @@ function om_post_cover($post = null, string $extra = ''): string {
     $inner = has_post_thumbnail($id) ? get_the_post_thumbnail($id, 'large') : om_jar($c);
     return '<div class="post-cover ' . esc_attr($g . ' ' . $extra) . '">' . $inner . '</div>';
 }
+
+/** Pravne stranice u podnožju: objavljene vide svi, a nacrte samo urednik (sa oznakom "nacrt"). */
+function om_legal_links(): string {
+    $pages = ['uslovi-kupovine', 'povrat-i-reklamacije', 'politika-privatnosti', 'podaci-o-prodavcu'];
+    $out = [];
+    foreach ($pages as $slug) {
+        $p = get_page_by_path($slug);
+        if (!$p) continue;
+        if ($p->post_status === 'publish') {
+            $out[] = '<a href="' . esc_url(get_permalink($p)) . '">' . esc_html($p->post_title) . '</a>';
+        } elseif (current_user_can('edit_pages') && $p->post_status === 'draft') {
+            $out[] = '<a href="' . esc_url(get_preview_post_link($p)) . '">' . esc_html($p->post_title) . ' (nacrt)</a>';
+        }
+    }
+    return implode(' · ', $out);
+}

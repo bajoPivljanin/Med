@@ -428,3 +428,10 @@ html{scroll-padding-top:84px}
 .out-note{background:var(--cream);border:1px solid var(--line);border-radius:14px;padding:.9rem 1.1rem;font-weight:700;color:var(--brown)}
 
 .empty-note{text-align:center;color:var(--brown-mid);padding:2rem 0}
+
+/* Pravne stranice */
+.entry h2{font-size:1.3rem;margin:1.6rem 0 .5rem}
+.entry p,.entry li{line-height:1.7}
+.entry ul{padding-left:1.2rem}
+.draft-note{background:#FFF1D6;border:1px solid var(--honey);border-radius:14px;padding:.9rem 1.1rem;margin:0 0 1.5rem}
+.copy .legal a{margin:0 .2rem}
