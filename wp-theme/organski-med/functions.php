@@ -67,3 +67,29 @@ add_action('wp_enqueue_scripts', function () {
 }, 20);
 
 require_once get_template_directory() . '/inc/shop.php';
+
+/** Datum na crnogorskom: "29. oktobar 2026." */
+function om_fmt_date($post = null): string {
+    $m = ['januar', 'februar', 'mart', 'april', 'maj', 'jun', 'jul', 'avgust', 'septembar', 'oktobar', 'novembar', 'decembar'];
+    $t = strtotime(get_post_field('post_date', $post));
+    return date('j', $t) . '. ' . $m[(int) date('n', $t) - 1] . ' ' . date('Y', $t) . '.';
+}
+
+function om_read_time($post = null): string {
+    $words = str_word_count(wp_strip_all_tags(get_post_field('post_content', $post)));
+    return max(1, (int) round($words / 180)) . ' min čitanja';
+}
+
+function om_post_cat($post = null): string {
+    $c = get_the_category(get_post_field('ID', $post));
+    return $c ? $c[0]->name : '';
+}
+
+/** Naslovna ilustracija članka (tegla u boji članka). */
+function om_post_cover($post = null, string $extra = ''): string {
+    $id = get_post_field('ID', $post);
+    $g = get_post_meta($id, '_om_gradient', true) ?: 'g1';
+    $c = get_post_meta($id, '_om_color', true) ?: '#E0A526';
+    $inner = has_post_thumbnail($id) ? get_the_post_thumbnail($id, 'large') : om_jar($c);
+    return '<div class="post-cover ' . esc_attr($g . ' ' . $extra) . '">' . $inner . '</div>';
+}

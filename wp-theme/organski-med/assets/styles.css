@@ -426,3 +426,5 @@ html{scroll-padding-top:84px}
 .card.is-out .img{filter:grayscale(.6);opacity:.7}
 .out-badge{display:inline-block;background:var(--cream);color:var(--brown-mid);border:1px solid var(--line);border-radius:999px;padding:.45rem .9rem;font-size:.8rem;font-weight:800}
 .out-note{background:var(--cream);border:1px solid var(--line);border-radius:14px;padding:.9rem 1.1rem;font-weight:700;color:var(--brown)}
+
+.empty-note{text-align:center;color:var(--brown-mid);padding:2rem 0}
