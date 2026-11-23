@@ -34,3 +34,4 @@ $h = fn(string $id) => $home ? "#$id" : home_url("/#$id");
   </div>
 </div></nav>
 <main id="main">
+<?php do_action('om_before_main'); ?>

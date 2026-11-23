@@ -65,3 +65,5 @@ add_action('wp_enqueue_scripts', function () {
     $dir = get_template_directory();
     wp_enqueue_script('organski-med-shop', get_template_directory_uri() . '/assets/shop.js', [], filemtime($dir . '/assets/shop.js'), true);
 }, 20);
+
+require_once get_template_directory() . '/inc/shop.php';
