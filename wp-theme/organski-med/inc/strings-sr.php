@@ -91,6 +91,8 @@ return [
     'Country / Region' => 'Država',
     'Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our %s.' => 'Vaši podaci se koriste samo za obradu narudžbine i dostavu.',
     'privacy policy' => 'politici privatnosti',
+    'You cannot add &quot;%s&quot; to the cart because the product is out of stock.' => 'Proizvod &bdquo;%s&ldquo; trenutno nema na zalihi i ne može se dodati u korpu.',
+    'Out of stock' => 'Trenutno nema',
     // Poruke
     'Select a country / region&hellip;' => 'Izaberite državu&hellip;',
     'Select an option&hellip;' => 'Izaberite&hellip;',

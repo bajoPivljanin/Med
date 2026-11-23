@@ -26,6 +26,7 @@ while (have_posts()) : the_post();
       <h1><?php echo esc_html($p->get_name()); ?></h1>
       <div class="pd-price"><?php echo wp_kses_post($p->get_price_html()); ?><small><?php echo esc_html($size); ?></small></div>
       <p class="pd-lead"><?php echo esc_html($lead); ?></p>
+      <?php if ($p->is_in_stock()) : ?>
       <form class="pd-buy" method="post" action="<?php echo esc_url($p->get_permalink()); ?>">
         <div class="qty" role="group" aria-label="Količina">
           <button type="button" data-d="-1" aria-label="Smanji količinu">−</button>
@@ -35,6 +36,9 @@ while (have_posts()) : the_post();
         <input type="hidden" name="quantity" id="qty-input" value="1">
         <button type="submit" name="add-to-cart" value="<?php echo esc_attr($p->get_id()); ?>" class="btn btn-primary">Dodaj u korpu</button>
       </form>
+      <?php else : ?>
+      <p class="out-note" role="status">Trenutno nema. Javite nam se za narudžbinu kad stigne nova berba.</p>
+      <?php endif; ?>
       <ul class="pd-trust">
         <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.5"/><circle cx="17" cy="17.5" r="1.5"/></svg>Dostava 1 do 3 radna dana</li>
         <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 6a7 7 0 1 0 0 12M4 10h9M4 14h9"/></svg>Plaćanje pouzećem</li>
