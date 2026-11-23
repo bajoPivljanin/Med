@@ -124,7 +124,8 @@ add_action('wp_head', function () {
 
 /** Stranica Shop nema svoj izgled: proizvodi su na početnoj, pa je preusmjeri tamo (i ne stavljaj u sitemap). */
 add_action('template_redirect', function () {
-    if (function_exists('is_shop') && is_shop()) {
+    $isArchive = function_exists('is_product_category') && (is_product_category() || is_product_tag());
+    if ($isArchive || (function_exists('is_shop') && is_shop())) {
         wp_safe_redirect(home_url('/#proizvodi'), 301);
         exit;
     }
@@ -135,3 +136,9 @@ add_filter('wp_sitemaps_posts_query_args', function ($args, $post_type) {
     }
     return $args;
 }, 20, 2);
+
+/** Kategorije i oznake Proizvoda nemaju svoj izgled (preusmjeravaju se na početnu), pa nisu ni u sitemap-u. */
+add_filter('wp_sitemaps_taxonomies', function ($taxonomies) {
+    unset($taxonomies['product_cat'], $taxonomies['product_tag']);
+    return $taxonomies;
+});
