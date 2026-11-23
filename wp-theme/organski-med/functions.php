@@ -109,3 +109,5 @@ function om_legal_links(): string {
     }
     return implode(' · ', $out);
 }
+
+require_once get_template_directory() . '/inc/seo.php';

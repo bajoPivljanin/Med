@@ -87,6 +87,13 @@ $adm = array_merge($adm, [
 ]);
 update_option('woocommerce_new_order_settings', $adm);
 
+/* Naziv sajta i vidljivost za pretragu (do puštanja sajt ostaje u WooCommerce "Coming soon" modu) */
+update_option('blogname', 'Organski med');
+update_option('blogdescription', '');
+update_option('blog_public', '1');
+$sample = get_page_by_path('sample-page');
+if ($sample && $sample->post_status === 'publish') { wp_trash_post($sample->ID); }
+
 /* Stranice Korpa i Narudžbina */
 $pages = [
     'woocommerce_cart_page_id'     => ['Korpa', 'korpa', '[woocommerce_cart]'],
